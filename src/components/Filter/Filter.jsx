@@ -6,7 +6,7 @@ const Filter = ({ handleFilterChange, state }) => {
   return (
     <div className={cl.filter}>
       <label className={cl.label} htmlFor="filter">
-        Find contacts by name
+        Find contacts by name || number
       </label>
       <div className={cl.inputField}>
         <input

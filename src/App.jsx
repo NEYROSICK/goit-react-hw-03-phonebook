@@ -20,14 +20,55 @@ export default class App extends React.Component {
     localStorage.setItem('contacts', contactsJSON);
   };
 
-  filterContacts = () => {
-    const filteredList = this.state.contacts.filter(contact => {
-      return contact.name
-        .toLowerCase()
-        .includes(this.state.filter.toLowerCase());
-    });
+  containsNumbers(inputString) {
+    const regex = /\d/;
+    return regex.test(inputString);
+  }
 
-    return filteredList;
+  containsOnlyNumbersRelated(inputString) {
+    const regex = /^[\d()\-\s]+$/;
+    return regex.test(inputString);
+  }
+
+  containsOnlyNumbers(inputString) {
+    const regex = /^\d+$/; // Regular expression to match only digits
+    return regex.test(inputString);
+  }
+
+  filterContacts = () => {
+    if (this.containsOnlyNumbersRelated(this.state.filter)) {
+      const filteredList = this.state.contacts.filter(contact => {
+        const temp =
+          contact.number
+            .split('')
+            .filter(digit => {
+              return this.containsOnlyNumbers(digit);
+            })
+            .join('')
+            .includes(this.state.filter) ||
+          contact.number
+            .split(' ')
+            .filter(num => num !== '')
+            .join('')
+            .includes(
+              this.state.filter
+                .split(' ')
+                .filter(num => num !== '')
+                .join('')
+            );
+        return temp;
+      });
+      return filteredList;
+    } else if (this.containsNumbers(this.state.filter)) {
+      return [];
+    } else {
+      const filteredList = this.state.contacts.filter(contact => {
+        return contact.name
+          .toLowerCase()
+          .includes(this.state.filter.toLowerCase());
+      });
+      return filteredList;
+    }
   };
 
   handleFilterChange = e => {
