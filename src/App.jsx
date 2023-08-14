@@ -1,5 +1,5 @@
 import React from 'react';
-import contacts from './assets/contacts.json';
+// import contacts from './assets/contacts.json';
 import ContactForm from './components/ContactForm';
 import Filter from 'components/Filter';
 import ContactList from 'components/ContactList';
@@ -7,12 +7,17 @@ import Section from 'components/Section';
 
 export default class App extends React.Component {
   state = {
-    contacts: [...contacts],
+    contacts: [],
     filter: '',
   };
 
   updateContacts = newContacts => {
     this.setState({ contacts: newContacts });
+  };
+
+  componentDidUpdate = () => {
+    const contactsJSON = JSON.stringify(this.state.contacts);
+    localStorage.setItem('contacts', contactsJSON);
   };
 
   filterContacts = () => {

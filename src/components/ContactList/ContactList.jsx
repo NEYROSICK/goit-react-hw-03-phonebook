@@ -1,69 +1,59 @@
 import ContactItem from 'components/ContactItem';
 import PropTypes from 'prop-types';
 import cl from 'components/ContactList/contactList.module.css';
-
-const renderContactList = (state, updateContacts, filteredContacts) => {
-  const deleteContact = contactName => {
-    const newContacts = state.contacts.filter(
-      contact => contact.name !== contactName
-    );
-    updateContacts(newContacts);
+import React from 'react';
+class ContactList extends React.Component {
+  componentDidMount = () => {
+    const newContacts = JSON.parse(localStorage.getItem('contacts'));
+    this.props.updateContacts(newContacts);
   };
 
-  // const filteredList = state.contacts.filter(contact => {
-  //   return contact.name.toLowerCase().includes(state.filter.toLowerCase());
-  // });
+  renderContactList = (state, updateContacts, filteredContacts) => {
+    const deleteContact = contactName => {
+      const newContacts = state.contacts.filter(
+        contact => contact.name !== contactName
+      );
+      updateContacts(newContacts);
+    };
 
-  // if (!filteredList.length && state.filter) {
-  //   return (
-  //     <p className={cl.emptyMessage}>
-  //       Sorry, there is no such contact in your phonebook
-  //     </p>
-  //   );
-  // } else if (!filteredList.length) {
-  //   return (
-  //     <p className={cl.emptyMessage}>
-  //       Complete Emptiness {':('}
-  //       <br /> Try to add some contacts to your phonebook
-  //     </p>
-  //   );
-  // }
+    if (!state.contacts.length) {
+      return (
+        <p className={cl.emptyMessage}>
+          Complete Emptiness {':('}
+          <br /> Try to add some contacts to your phonebook
+        </p>
+      );
+    } else if (!filteredContacts.length && state.filter) {
+      return (
+        <p className={cl.emptyMessage}>
+          Sorry, there is no such contact in your phonebook
+        </p>
+      );
+    } else {
+      return (
+        <ul className={cl.list}>
+          {filteredContacts.map(contact => {
+            return (
+              <ContactItem
+                deleteContact={deleteContact}
+                key={contact.id}
+                name={contact.name}
+                number={contact.number}
+                url={'https://cdn-icons-png.flaticon.com/128/1177/1177568.png'}
+              />
+            );
+          })}
+        </ul>
+      );
+    }
+  };
 
-  if (!state.contacts.length) {
-    return (
-      <p className={cl.emptyMessage}>
-        Complete Emptiness {':('}
-        <br /> Try to add some contacts to your phonebook
-      </p>
-    );
-  } else if (!filteredContacts.length && state.filter) {
-    return (
-      <p className={cl.emptyMessage}>
-        Sorry, there is no such contact in your phonebook
-      </p>
-    );
-  } else {
-    return (
-      <ul className={cl.list}>
-        {filteredContacts.map(contact => {
-          return (
-            <ContactItem
-              deleteContact={deleteContact}
-              key={contact.id}
-              name={contact.name}
-              number={contact.number}
-              url={'https://cdn-icons-png.flaticon.com/128/1177/1177568.png'}
-            />
-          );
-        })}
-      </ul>
-    );
+  render() {
+    const { state, updateContacts, filteredContacts } = this.props;
+
+    return this.renderContactList(state, updateContacts, filteredContacts);
   }
-};
-
-const ContactList = ({ state, updateContacts, filteredContacts }) => {
-  return renderContactList(state, updateContacts, filteredContacts);
-};
+}
 
 ContactList.propTypes = {
   state: PropTypes.object.isRequired,
