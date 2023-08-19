@@ -95,7 +95,9 @@ export default class ContactForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    const nameClone = this.checkContactName();
+    const nameClone = this.props.state.contacts
+      ? this.checkContactName()
+      : false;
     const numberClone = this.checkContactNumber();
 
     if (!this.checkDuplicates(nameClone, numberClone)) {
