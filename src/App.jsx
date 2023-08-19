@@ -36,38 +36,42 @@ export default class App extends React.Component {
   }
 
   filterContacts = () => {
-    if (this.containsOnlyNumbersRelated(this.state.filter)) {
-      const filteredList = this.state.contacts.filter(contact => {
-        const temp =
-          contact.number
-            .split('')
-            .filter(digit => {
-              return this.containsOnlyNumbers(digit);
-            })
-            .join('')
-            .includes(this.state.filter) ||
-          contact.number
-            .split(' ')
-            .filter(num => num !== '')
-            .join('')
-            .includes(
-              this.state.filter
-                .split(' ')
-                .filter(num => num !== '')
-                .join('')
-            );
-        return temp;
-      });
-      return filteredList;
-    } else if (this.state.filter && this.containsNumbers(this.state.filter)) {
-      return [];
+    if (this.state.filter) {
+      if (this.containsOnlyNumbersRelated(this.state.filter)) {
+        const filteredList = this.state.contacts.filter(contact => {
+          const temp =
+            contact.number
+              .split('')
+              .filter(digit => {
+                return this.containsOnlyNumbers(digit);
+              })
+              .join('')
+              .includes(this.state.filter) ||
+            contact.number
+              .split(' ')
+              .filter(num => num !== '')
+              .join('')
+              .includes(
+                this.state.filter
+                  .split(' ')
+                  .filter(num => num !== '')
+                  .join('')
+              );
+          return temp;
+        });
+        return filteredList;
+      } else if (this.containsNumbers(this.state.filter)) {
+        return [];
+      } else {
+        const filteredList = this.state.contacts.filter(contact => {
+          return contact.name
+            .toLowerCase()
+            .includes(this.state.filter.toLowerCase());
+        });
+        return filteredList;
+      }
     } else {
-      const filteredList = this.state.contacts.filter(contact => {
-        return contact.name
-          .toLowerCase()
-          .includes(this.state.filter.toLowerCase());
-      });
-      return filteredList;
+      return this.state.contacts;
     }
   };
 
