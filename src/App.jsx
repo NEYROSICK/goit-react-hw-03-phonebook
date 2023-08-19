@@ -59,7 +59,7 @@ export default class App extends React.Component {
         return temp;
       });
       return filteredList;
-    } else if (this.containsNumbers(this.state.filter)) {
+    } else if (this.state.filter && this.containsNumbers(this.state.filter)) {
       return [];
     } else {
       const filteredList = this.state.contacts.filter(contact => {
