@@ -1,5 +1,4 @@
 import React from 'react';
-// import contacts from './assets/contacts.json';
 import ContactForm from './components/ContactForm';
 import Filter from 'components/Filter';
 import ContactList from 'components/ContactList';
@@ -36,7 +35,6 @@ export default class App extends React.Component {
   }
 
   filterContacts = () => {
-    // if (this.state.filter) {
     if (this.containsOnlyNumbersRelated(this.state.filter)) {
       const filteredList = this.state.contacts.filter(contact => {
         const temp =
@@ -70,9 +68,6 @@ export default class App extends React.Component {
       });
       return filteredList;
     }
-    // } else {
-    //   return this.state.contacts;
-    // }
   };
 
   handleFilterChange = e => {

@@ -52,7 +52,6 @@ class ContactList extends React.Component {
 
   render() {
     const { state, updateContacts, filteredContacts } = this.props;
-    console.log(filteredContacts);
 
     return this.renderContactList(state, updateContacts, filteredContacts);
   }
