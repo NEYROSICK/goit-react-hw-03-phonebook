@@ -5,7 +5,8 @@ import React from 'react';
 
 class ContactList extends React.Component {
   componentDidMount = () => {
-    const newContacts = JSON.parse(localStorage.getItem('contacts'));
+    const storedContacts = localStorage.getItem('contacts');
+    const newContacts = storedContacts ? JSON.parse(storedContacts) : [];
     this.props.updateContacts(newContacts);
   };
 
@@ -17,7 +18,7 @@ class ContactList extends React.Component {
       updateContacts(newContacts);
     };
 
-    if (state.contacts && !state.contacts.length) {
+    if (!state.contacts.length) {
       return (
         <p className={cl.emptyMessage}>
           Complete Emptiness {':('}
@@ -51,6 +52,7 @@ class ContactList extends React.Component {
 
   render() {
     const { state, updateContacts, filteredContacts } = this.props;
+    console.log(filteredContacts);
 
     return this.renderContactList(state, updateContacts, filteredContacts);
   }
